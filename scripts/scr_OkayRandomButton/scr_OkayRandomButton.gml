@@ -101,21 +101,21 @@ switch (_type)
 	} if (_category == "Neutral")
 	{
 		// Get the id of the hexagon the boat is resting on
-		var _boatHex = instance_place(obj_Player.x, obj_Player.y, obj_hexTester);
-		
-		// Search the ds_list for this id.
-		var _index = ds_list_find_index(global.selectedHex, _boatHex);
-		obj_Player.currentTile = _index;
-		
+		var _boatHex = ds_list_find_value(global.selectedHex, obj_Player.currentTile);
+				
 		// Delete list entries up until _index
-		while (ds_list_size(global.selectedHex) - 1 > _index)
+		while (ds_list_size(global.selectedHex) - 1 > obj_Player.currentTile)
 		{
-		    ds_list_delete(global.selectedHex, _index + 1);
+			var _size = ds_list_size(global.selectedHex) - 1;
+			thisHex = ds_list_read(global.selectedHex, _size);
+			thisHex.myState = States.Cold;
+			thisHex.isEncountered = false;
+		    ds_list_delete(global.selectedHex, _size);
 		}
 		
 		// Teleport Tracer
-		obj_Tracer.x = obj_Player.x;
-		obj_Tracer.y = obj_Player.y;
+		obj_Tracer.x = _boatHex.x;
+		obj_Tracer.y = _boatHex.y;
 		
 		// Move Tracer
 		obj_Tracer.isDone = false;
@@ -131,8 +131,9 @@ switch (_type)
 		{
 			if (landTitle == _portName)
 			{
-				_mx = x + 16;
-				_my = y + 16;
+				_mx = x;
+				_my = y;
+				show_debug_message("Script OkayRandom: _mx and _my is " + string(_mx) + "," + string(_my));
 			}
 		}
 		
@@ -141,17 +142,10 @@ switch (_type)
 			if (mp_grid_path(global.ourGrid, myPath, x, y, _mx, _my, 1) and isDone == false)
 			{
 				path_start(myPath, 8, path_action_stop, false);
-				if (path_position == 1)
-				{
-					obj_Player.eventResolved = true;
-				}
 			}
 		}
-		with (obj_Player)
-		{
-			event_user(1); // Resume Sailing	
-		}
 	}
-
+	instance_destroy(myCard);
+	instance_destroy();	
 	exit;
 }

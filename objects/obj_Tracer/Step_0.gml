@@ -31,3 +31,9 @@ if (thisHex) // am I colliding with a tile? Bob- Returns false if no instance th
     }
 }
 
+if (path_position == 1 and obj_Player.hasEvent == true and isDone != true)
+{
+	show_debug_message("Tracer Step: Path Complete, Let's Resolve Event.")
+	obj_Player.eventResolved = true;
+	isDone = true; // So that it only does this once
+}

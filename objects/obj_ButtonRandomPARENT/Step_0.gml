@@ -1,6 +1,6 @@
 /// @description UPDATE POS
 
-if (myCard != noone)
+if (instance_exists(myCard))
 {
 	x = myCard.x + xOffset;
 	y = myCard.y + yOffset;

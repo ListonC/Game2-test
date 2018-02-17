@@ -44,5 +44,5 @@ bodyFont = fnt_CodersCrux12;
 
 //alarm_set(0, myTicks);
 
-event_user(0); // Spawn Buttons
+alarm_set(1, 10); // Spawn Buttons
 
